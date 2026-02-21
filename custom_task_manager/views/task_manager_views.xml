@@ -1,0 +1,117 @@
+<odoo>
+    <data>
+        <!-- explicit list view definition -->
+        <record model="ir.ui.view" id="custom_task_manager_list">
+            <field name="name">custom_task_manager list</field>
+            <field name="model">task.task</field>
+            <field name="arch" type="xml">
+                <list>
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="partner_id"/>
+                    <field name="deadline"/>
+                    <field name="description"/>
+                    <field name="state"/>
+                </list>
+            </field>
+        </record>
+
+        <record id="custom_task_manager_form" model="ir.ui.view">
+            <field name="name">custom_task_manager.form</field>
+            <field name="model">task.task</field>
+            <field name="arch" type="xml">
+                <form string="Custom Task Manager Form">
+                    <header>
+                        <button type="object" name="sent_to_in_progress" string="Sent To In Progress" class=""
+                                invisible="state == 'in_progress'"/>
+                        <button type="object" name="sent_to_in_qa" string="Sent To QA" class="oe_highlight"
+                                invisible="state == 'qa'"/>
+                        <button type="object" name="sent_to_done" string="Mark As Done" class="btn-success"
+                                invisible="state == 'done'"/>
+
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="name"/>
+                                <field name="user_id"/>
+                                <field name="partner_id" readonly="state == 'qa'" options="{'no_open': 1, 'no_create': True}"/>
+                            </group>
+                            <group>
+                                <field name="deadline"/>
+                                <field name="description" required="1"/>
+                                <field name="state" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="custom_task_manager_kanban" model="ir.ui.view">
+            <field name="name">custom_task_manager_kanban</field>
+            <field name="model">task.task</field>
+            <field name="arch" type="xml">
+                <kanban quick_create="true" default_group_by="state">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="deadline"/>
+                    <field name="description"/>
+                    <field name="state"/>
+                    <field name="is_overdue"/>
+                    <progressbar field="state" colors='{"qa": "danger", "new": "success"}'/>
+                    <templates>
+                        <t t-name="card">
+                            <div class="oe_kanban_card">
+                                <div class="d-flex justify-content-between">
+                                    <field name="name" class="fw-bolder"/>
+                                    <field name="user_id" class="fw-bolder"/>
+                                </div>
+                            </div>
+                            <footer class="align-items-end">
+                                <div class="d-flex flex-wrap gap-1 text-muted text-nowrap">
+                                    <field name="deadline"/>
+                                    <span class="fw-bold text-danger" t-if="record.is_overdue.raw_value">Overdue</span>
+                                    <span class="fw-bold text-success" t-else="">On Track</span>
+                                </div>
+                                <field name="state" widget="label_selection"
+                                       options="{'classes': {'qa': 'info', 'new': 'default', 'done': 'success', 'in_progress': 'primary', 'failed': 'danger'}}"
+                                       class="ms-auto"/>
+                            </footer>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <!-- Action for Task Manager -->
+        <record id="custom_task_manager_action" model="ir.actions.act_window">
+            <field name="name">Task Manager</field>
+            <field name="res_model">task.task</field>
+            <field name="view_mode">kanban,list,form</field>
+            <!--            <field name="search_view_id" ref="view_travel_expense_category_search"/>-->
+            <!--            <field name="context">{'search_default_confirmed': 1}</field>-->
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Create New Task
+                </p>
+                <p>
+                    Define categories like Flight, Hotel, Car Rental, Meals, etc.
+                    Each category will create a linked product for expense tracking.
+                </p>
+            </field>
+        </record>
+
+        <!-- This Menu Item will appear in the Upper bar, That's why It needs NO parent or action -->
+        <menuitem id="custom_task_manager_root" name="Task Manager" sequence="20"/>
+
+        <menuitem
+                name="Custom Task Manager"
+                id="custom_task_manager_menu"
+                parent="custom_task_manager_root"
+                action="custom_task_manager_action"
+                sequence="5"
+        />
+    </data>
+</odoo>
