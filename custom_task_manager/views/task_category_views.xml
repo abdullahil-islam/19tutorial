@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="task_category_view_form" model="ir.ui.view">
+        <field name="name">task_category_view_form</field>
+        <field name="model">task.category</field>
+        <field name="arch" type="xml">
+            <form string="task_category_form">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="task_count"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="task_category_view_list" model="ir.ui.view">
+        <field name="name">task_category_view_list</field>
+        <field name="model">task.category</field>
+        <field name="arch" type="xml">
+            <list string="task_category_list">
+                <field name="name"/>
+                <field name="task_count"/>
+            </list>
+        </field>
+    </record>
+
+    <record id="task_category_action" model="ir.actions.act_window">
+        <field name="name">Task Category</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">task.category</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- This Menu Item must have a parent and an action -->
+    <menuitem
+            id="menu_task_category"
+            parent="custom_task_manager.custom_task_manager_root"
+            action="task_category_action"
+            sequence="40"
+            groups="custom_task_manager.group_team_lead,base.group_system"
+    />
+</odoo>

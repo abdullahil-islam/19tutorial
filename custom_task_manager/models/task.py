@@ -1,6 +1,14 @@
 from odoo import models, fields, api
 
 
+class TaskCategory(models.Model):
+    _name = 'task.category'
+    _description = 'Task Category'
+
+    name = fields.Char(string='Name', required=True)
+    task_count = fields.Integer(string='Task Count')
+
+
 class Task(models.Model):
     _name = 'task.task'
     _description = 'Custom Task'

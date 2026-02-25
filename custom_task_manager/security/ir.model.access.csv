@@ -1,3 +1,4 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_custom_task_manager,custom_task_manager_user,model_task_task,base.group_user,1,1,1,0
-access_custom_task_manager_admin,custom_task_manager_admin,model_task_task,base.group_system,1,1,1,1
+access_custom_task_manager,custom_task_manager_user,model_task_task,custom_task_manager.group_team_member,1,1,1,0
+
+access_custom_task_category,access_custom_task_category,model_task_category,base.group_user,1,1,1,1

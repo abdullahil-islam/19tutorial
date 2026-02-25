@@ -21,9 +21,11 @@ Long description of module's purpose
 
     # always loaded
     'data': [
+        'security/groups.xml',
         'security/ir.model.access.csv',
         'views/task_manager_views.xml',
         'views/sale_order_views.xml',
+        'views/task_category_views.xml',
     ],
 
 }
